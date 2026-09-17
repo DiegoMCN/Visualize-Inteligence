@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VISUALIZE · iMexico Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#202845; --navy-2:#2A3357; --navy-3:#3A446B;
+  --gold:#C9A96E; --gold-2:#B8955A; --gold-soft:#F5EEE0;
+  --paper:#F3F4F7; --card:#FFFFFF; --ink:#1E2335; --slate:#636A7F; --line:#DCDFE7; --line-2:#ECEEF3;
+  --ok:#2E7663; --ok-2:#4D8F7B; --warn:#AA7A26; --bad:#A4474A;
+  --serif:"DM Serif Display", Georgia, "Times New Roman", serif;
+  --sans:"DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+a{color:var(--navy)}
+
+/* ---------- Encabezado ---------- */
+.top{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20}
+.top-in{display:flex;align-items:center;gap:24px;padding:12px 28px;flex-wrap:wrap}
+.marca{font-family:var(--serif);font-size:21px;line-height:1.05;margin:0;white-space:nowrap}
+.marca small{display:block;font-family:var(--sans);font-size:12px;color:var(--gold);margin-top:2px}
+.pasos{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto}
+.pasos button{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:#AEB4C8;padding:10px 14px;border-radius:8px;cursor:pointer;white-space:nowrap;font-size:14.5px}
+.pasos button .k{width:22px;height:22px;border-radius:50%;border:1px solid #5A6488;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.pasos button[aria-selected=true]{background:var(--navy-2);color:#fff}
+.pasos button[aria-selected=true] .k{background:var(--gold);border-color:var(--gold);color:var(--navy);font-weight:700}
+.pasos .sep{align-self:center;color:#4A5378;padding:0 2px}
+.contexto{font-size:12.5px;color:#C9CEDD;white-space:nowrap}
+.contexto b{color:#fff;font-weight:600}
+.btn{border:0;background:var(--navy);color:#fff;padding:9px 15px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;white-space:nowrap}
+.btn:hover{background:var(--navy-2)}
+.btn.oro{background:var(--gold);color:var(--navy)} .btn.oro:hover{background:#D4B785}
+.btn.linea{background:#fff;color:var(--ink);border:1px solid var(--line)} .btn.linea:hover{background:#F7F8FA}
+.btn.chico{padding:6px 10px;font-size:13px}
+.btn.peligro{background:#fff;color:var(--bad);border:1px solid #E6CACA}
+
+main{padding:26px 28px 70px;max-width:1440px;margin:0 auto}
+.vista-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.vista-h h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.1;margin:0 0 4px}
+.vista-h p{margin:0;color:var(--slate);max-width:72ch}
+.acciones{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- 1. Cliente ---------- */
+.cliente{display:grid;grid-template-columns:350px 1fr;gap:22px;align-items:start}
+.perfil{background:var(--navy);color:#EEF0F6;border-radius:14px;padding:20px 20px 8px;position:sticky;top:86px}
+.perfil h2{font-size:13px;font-weight:600;color:#AEB4C8;margin:18px 0 10px;padding-top:14px;border-top:1px solid var(--navy-3)}
+.perfil h2:first-child{margin-top:0;padding-top:0;border-top:0}
+.campo{margin-bottom:13px}
+.campo > label,.campo .lbl{display:block;font-size:13px;color:#C9CEDD;margin-bottom:5px}
+.perfil input[type=text],.perfil select{width:100%;background:var(--navy-2);border:1px solid var(--navy-3);border-radius:8px;padding:8px 11px;color:#fff}
+.perfil input::placeholder{color:#7C84A0}
+.perfil select option{color:#1E2335}
+.dos-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dinero{position:relative}
+.dinero span{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#8F97B3;font-size:13px}
+.dinero input{padding-left:24px!important}
+.seg{display:flex;background:var(--navy-2);border:1px solid var(--navy-3);border-radius:8px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:transparent;border-radius:6px;padding:6px 3px;font-size:13px;color:#C9CEDD;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--gold);color:var(--navy);font-weight:600}
+.rango{display:flex;align-items:center;gap:12px}
+.rango input{flex:1;accent-color:var(--gold)}
+.rango output{font-family:var(--serif);font-size:21px;min-width:62px;text-align:right;color:#fff}
+.rango output small{font-family:var(--sans);font-size:12px;color:#8F97B3}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}
+.chip{font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--slate)}
+.chip b{color:var(--ink);font-weight:600}
+
+.podio{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:30px}
+.podio .lado{display:grid;gap:14px}
+.rec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.rec.principal{border-top:4px solid var(--gold)}
+.rec .pos{font-size:12.5px;color:var(--slate)}
+.rec .fila{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.rec h3{font-family:var(--serif);font-weight:400;font-size:23px;line-height:1.15;margin:2px 0 3px}
+.rec.principal h3{font-size:29px}
+.rec .donde{font-size:13.5px;color:var(--slate)}
+.score{text-align:right;flex-shrink:0}
+.score .n{font-family:var(--serif);font-size:42px;line-height:1;color:var(--navy)}
+.rec.principal .score .n{font-size:56px}
+.nivel{font-size:12.5px;font-weight:600}
+.nivel.Excepcional{color:var(--ok)} .nivel.Fuerte{color:var(--ok-2)} .nivel.Posible{color:var(--warn)} .nivel.Debil{color:var(--bad)} .nivel.Sin{color:var(--slate)}
+.datos{display:flex;flex-wrap:wrap;gap:4px 16px;margin:12px 0;font-size:13.5px}
+.datos span{color:var(--slate)}
+.txt{font-size:14px;margin:8px 0 0}
+.txt.sec{font-size:13px;color:var(--slate)}
+.no-ofrecer{margin-top:10px;font-size:13px;background:var(--gold-soft);border-left:3px solid var(--gold);padding:7px 10px;border-radius:0 6px 6px 0}
+.alerta{margin-top:7px;font-size:13px;background:#F7E9E9;border-left:3px solid var(--bad);padding:7px 10px;border-radius:0 6px 6px 0}
+.link{background:none;border:0;padding:0;color:var(--navy);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:13px;font-weight:600;margin-top:12px}
+
+.comp{margin-top:14px}
+.comp .t{font-size:12.5px;color:var(--slate);margin-bottom:5px;display:flex;justify-content:space-between}
+.pila{display:flex;height:13px;border-radius:4px;overflow:hidden;background:#EEF0F4}
+.pila i{display:block;height:100%}
+.pila i + i{border-left:2px solid #fff}
+.pila i.desc{background:repeating-linear-gradient(135deg,#E3C9C9 0 4px,#F4E4E4 4px 8px)}
+.leyenda{display:flex;flex-wrap:wrap;gap:3px 14px;margin-top:7px;font-size:12.5px;color:var(--slate)}
+.leyenda span{display:inline-flex;align-items:center;gap:6px}
+.leyenda span::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--c)}
+.c0{--c:#202845}.c1{--c:#C9A96E}.c2{--c:#5C6E9E}.c3{--c:#8FA3C9}.c4{--c:#B9A37C}.c5{--c:#BFC6D6}.cdesc{--c:#D9A9A9}
+.pila i.c0,.pila i.c1,.pila i.c2,.pila i.c3,.pila i.c4,.pila i.c5{background:var(--c)}
+
+h2.sec{font-family:var(--serif);font-weight:400;font-size:23px;margin:0 0 3px}
+.sub{color:var(--slate);font-size:14px;margin:0 0 12px}
+.tabla-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-weight:600;font-size:12.5px;color:var(--slate);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+.rk{color:var(--slate);width:34px}
+.nom{font-weight:600}
+.nom small{display:block;font-weight:400;color:var(--slate);font-size:12.5px}
+.mini{display:flex;align-items:center;gap:10px;min-width:140px}
+.mini .b{flex:1;height:6px;background:#EEF0F4;border-radius:3px;overflow:hidden}
+.mini .b i{display:block;height:100%;background:var(--navy)}
+.mini b{font-weight:600;min-width:28px;text-align:right}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.tag.Excepcional{background:#DCEDE7;color:var(--ok)} .tag.Fuerte{background:#E6F0EC;color:#3E7F6B}
+.tag.Posible{background:#F6ECD9;color:var(--warn)} .tag.Debil{background:#F4E2E2;color:var(--bad)} .tag.Sin{background:#ECEEF2;color:var(--slate)}
+.flag{color:var(--bad);font-weight:700;margin-left:5px}
+.editado{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-left:6px;vertical-align:middle}
+tr.fila-rk{cursor:pointer}
+tr.fila-rk:hover td{background:#FAFBFC}
+tr.detalle td{background:#FAFBFC;padding:4px 16px 16px}
+.detalle-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+.pie{margin-top:26px;font-size:12.5px;color:var(--slate);max-width:85ch}
+
+/* ---------- 2. Desarrollos ---------- */
+.desarrollos{display:grid;grid-template-columns:320px 1fr;gap:22px;align-items:start}
+.lista{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;position:sticky;top:86px;max-height:calc(100vh - 110px);display:flex;flex-direction:column}
+.lista-h{padding:12px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.lista-h input,.lista-h select{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#F8F9FB}
+.lista-orden{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--slate)}
+.lista-orden select{width:auto;padding:3px 6px;font-size:12.5px}
+.lista ul{list-style:none;margin:0;padding:6px;overflow-y:auto}
+.lista li button{width:100%;display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:8px;cursor:pointer}
+.lista li button:hover{background:#F6F7FA}
+.lista li button[aria-current=true]{background:var(--navy);color:#fff}
+.lista li button[aria-current=true] small{color:#AEB4C8}
+.lista li .n1{font-weight:600;font-size:14px;line-height:1.25}
+.lista li small{display:block;font-weight:400;color:var(--slate);font-size:12px}
+.lista li .sc{text-align:right;font-size:12px;color:var(--slate);line-height:1.2}
+.lista li .sc b{display:block;font-size:16px;color:inherit;font-weight:600}
+.lista li button[aria-current=true] .sc{color:#AEB4C8}
+.lista li button[aria-current=true] .sc b{color:#fff}
+.lista-pie{border-top:1px solid var(--line);padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lista-pie .btn{width:100%}
+
+.editor{display:grid;gap:16px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.ed-h{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.ed-h h2{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.1;margin:0}
+.ed-h .donde{color:var(--slate);font-size:14px;margin-top:3px}
+.marcadores{display:flex;gap:10px}
+.marcador{border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:150px}
+.marcador .l{font-size:12.5px;color:var(--slate)}
+.marcador .v{font-family:var(--serif);font-size:40px;line-height:1.05;color:var(--navy)}
+.marcador .x{font-size:12.5px;font-weight:600}
+.marcador.oscuro{background:var(--navy);border-color:var(--navy);color:#fff}
+.marcador.oscuro .l{color:#AEB4C8}.marcador.oscuro .v{color:#fff}
+.delta{font-size:12px;font-weight:600;margin-left:6px}
+.delta.up{color:#6FC2A6}.delta.down{color:#E39A9C}
+.marcador:not(.oscuro) .delta.up{color:var(--ok)}.marcador:not(.oscuro) .delta.down{color:var(--bad)}
+.ed-alertas{margin-top:12px}
+
+.panel h3{font-size:15px;font-weight:600;margin:0 0 2px}
+.panel .sub{margin-bottom:14px}
+.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.fg label{display:block;font-size:12.5px;color:var(--slate);margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff}
+.fg textarea{resize:vertical;min-height:58px}
+.fg.ancho{grid-column:span 2}
+.fg.todo{grid-column:1/-1}
+
+.vars{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
+.grupo-t{grid-column:1/-1;font-size:13px;font-weight:600;color:var(--slate);margin:6px 0 -2px;padding-bottom:6px;border-bottom:1px solid var(--line-2)}
+.var{padding:10px 0 8px}
+.var-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.var-h .nm{font-weight:600;font-size:14px}
+.var-h .pe{font-size:12px;color:var(--slate);white-space:nowrap}
+.var-c{display:grid;grid-template-columns:1fr 46px;gap:12px;align-items:center;margin-top:6px}
+.var-c input[type=range]{width:100%;accent-color:var(--navy)}
+.var-c output{font-family:var(--serif);font-size:24px;text-align:right;color:var(--navy);line-height:1}
+.var.nula .var-c output{color:#A3A8B8;font-family:var(--sans);font-size:14px}
+.var.nula input[type=range]{opacity:.35}
+.var-g{display:flex;justify-content:space-between;font-size:11.5px;color:var(--slate);margin-top:2px}
+.var-f{display:flex;justify-content:space-between;align-items:center;margin-top:4px;font-size:12.5px;color:var(--slate)}
+.var-f label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.var-f .orig{color:var(--gold-2);font-weight:600}
+.var-f .rest{background:none;border:0;padding:0;color:var(--navy);text-decoration:underline;cursor:pointer;font-size:12.5px}
+details.panel summary{cursor:pointer;font-weight:600;font-size:15px}
+details.panel[open] summary{margin-bottom:14px}
+.ed-pie{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.vacio{padding:40px;text-align:center;color:var(--slate)}
+
+/* ---------- 3. Pesos ---------- */
+.pesos-lay{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.bloque-p{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.bloque-p .cab{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.total{font-size:13px;padding:4px 10px;border-radius:999px;background:#E6F0EC;color:var(--ok);font-weight:600;white-space:nowrap}
+.total.mal{background:#F6ECD9;color:var(--warn)}
+.prow{display:grid;grid-template-columns:200px 1fr 64px;gap:16px;align-items:center;padding:10px 0;border-top:1px solid var(--line-2)}
+.prow:first-of-type{border-top:0}
+.prow .nm{font-weight:600;font-size:14px}
+.prow .nm small{display:block;font-weight:400;color:var(--slate);font-size:12px}
+.prow .ctl input{width:100%;accent-color:var(--gold-2)}
+.prow .ctl .pq{font-size:12.5px;color:var(--slate);margin-top:1px}
+.prow .val{display:flex;align-items:center;gap:4px;justify-content:flex-end}
+.prow .val input{width:54px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;text-align:right;font-family:var(--serif);font-size:18px}
+.prow.cambio .val input{border-color:var(--gold);background:var(--gold-soft)}
+.efecto{position:sticky;top:86px;background:var(--navy);color:#fff;border-radius:14px;padding:18px}
+.efecto .h3{display:block;font-family:var(--serif);font-weight:400;font-size:21px;margin:0 0 2px}
+.efecto p{font-size:12.5px;color:#AEB4C8;margin:0 0 12px}
+.efecto ol{list-style:none;margin:0;padding:0}
+.efecto li{display:grid;grid-template-columns:24px 1fr auto 34px;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--navy-3);font-size:13.5px}
+.efecto li .r{color:#8F97B3}
+.efecto li b{font-weight:600}
+.efecto li .mv{font-size:12px;text-align:right;font-weight:600}
+.efecto li .mv.up{color:#6FC2A6}.efecto li .mv.down{color:#E39A9C}.efecto li .mv.eq{color:#6A7394}
+.reglas{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.regla{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.regla b{display:block}
+
+/* ---------- 4. Fuentes ---------- */
+.fuentes-lay{display:grid;gap:22px}
+
+
+/* Sliders */
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:#E3E6EE;outline-offset:6px;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--navy);border:3px solid #fff;box-shadow:0 0 0 1px var(--navy)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--navy);border:3px solid #fff;box-shadow:0 0 0 1px var(--navy)}
+input[type=range]:disabled{cursor:not-allowed}
+.perfil input[type=range]{background:var(--navy-3)}
+.perfil input[type=range]::-webkit-slider-thumb{background:var(--gold);border-color:var(--navy);box-shadow:0 0 0 1px var(--gold)}
+.perfil input[type=range]::-moz-range-thumb{background:var(--gold);border-color:var(--navy);box-shadow:0 0 0 1px var(--gold)}
+.prow input[type=range]::-webkit-slider-thumb{background:var(--gold-2);box-shadow:0 0 0 1px var(--gold-2)}
+.prow input[type=range]::-moz-range-thumb{background:var(--gold-2);box-shadow:0 0 0 1px var(--gold-2)}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:50;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+
+@media screen and (max-width:1180px){ .podio{grid-template-columns:1fr} .pesos-lay{grid-template-columns:1fr} .efecto{position:static} .form-grid{grid-template-columns:repeat(2,1fr)} }
+.ct,.sel-movil,.flotante,.efecto-res,.chev{display:none}
+.cliente > *,.desarrollos > *,.pesos-lay > *,.editor > *{min-width:0}
+html,body{overflow-x:clip}
+.efecto-t{all:unset;display:block;width:100%;cursor:default}
+.k-i{font-style:italic;font-family:var(--serif)}
+.tab-fuentes{margin-left:10px}
+.ed-fijo{position:sticky;top:66px;z-index:5;box-shadow:0 1px 0 var(--line)}
+.ed-alertas:empty{display:none}
+.ed-alertas .alerta:first-child{margin-top:0}
+
+@media (pointer:coarse){
+  input[type=range]{height:8px}
+  input[type=range]::-webkit-slider-thumb{width:28px;height:28px}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px}
+  .seg button{padding:9px 3px}
+}
+
+@media screen and (max-width:900px){
+  body{font-size:15px;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+  input,select,textarea{font-size:16px!important}
+  .lg{display:none}.ct{display:inline}
+  .top{position:static}
+  .top-in{padding:12px 16px;flex-wrap:nowrap}
+  .marca{font-size:18px}.marca small{font-size:11.5px}
+  .contexto{display:none}
+  [data-vista=cliente] .cliente{padding-bottom:64px}
+  .pasos{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--navy);border-top:1px solid var(--navy-3);margin:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;gap:0;overflow:visible}
+  .pasos .sep{display:none}
+  .pasos button{flex:1;flex-direction:column;gap:3px;padding:6px 2px;font-size:11.5px;border-radius:10px;min-height:52px;justify-content:center}
+  .pasos button .k{width:24px;height:24px}
+  .pasos button[aria-selected=true]{background:transparent;color:#fff}
+  .tab-fuentes{margin-left:0}
+  main{padding:18px 14px 24px}
+  .vista-h{margin-bottom:14px}
+  .vista-h h1{font-size:25px}
+  .vista-h .acciones{width:100%}.vista-h .acciones .btn{flex:1;padding:12px}
+
+  /* Cliente */
+  .cliente,.desarrollos{grid-template-columns:1fr;gap:16px}
+  .perfil{position:static;border-radius:14px;padding:16px 16px 4px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -14px 14px;padding:0 14px 2px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{white-space:nowrap}
+  .podio{grid-template-columns:1fr;gap:12px}
+  .podio .lado{gap:12px}
+  .rec{padding:16px}
+  .rec h3{font-size:21px}.rec.principal h3{font-size:25px}
+  .score .n{font-size:38px}.rec.principal .score .n{font-size:48px}
+  .flotante{position:fixed;left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:30;display:flex;align-items:center;justify-content:space-between;gap:12px;border:0;border-radius:12px;background:var(--gold);color:var(--navy);padding:11px 14px;font-weight:600;font-size:14px;box-shadow:0 8px 24px rgba(32,40,69,.28);cursor:pointer;text-align:left}
+  .flotante[hidden]{display:none!important}
+  .flotante b{font-family:var(--serif);font-size:24px;font-weight:400;line-height:1}
+
+  /* Ranking como tarjetas */
+  .tabla-rk thead{display:none}
+  .tabla-rk,.tabla-rk tbody{display:block}
+  .tabla-rk tr.fila-rk{display:grid;grid-template-columns:24px 1fr auto;grid-template-areas:"rk nom sc" "rk tag pr";gap:4px 10px;padding:12px 14px;border-bottom:1px solid var(--line-2)}
+  .tabla-rk tr.fila-rk td{padding:0;border:0}
+  .tabla-rk td.rk{grid-area:rk;padding-top:2px}
+  .tabla-rk td.nom{grid-area:nom}
+  .tabla-rk td.c-sc{grid-area:sc}
+  .tabla-rk td.c-sc .mini{min-width:0}.tabla-rk td.c-sc .mini .b{display:none}.tabla-rk td.c-sc .mini b{font-family:var(--serif);font-size:24px;font-weight:400;line-height:1}
+  .tabla-rk td.c-tag{grid-area:tag}
+  .tabla-rk td.c-pr{grid-area:pr;font-size:13px;color:var(--slate)}
+  .tabla-rk td.c-is{display:none}
+  .tabla-rk tr.detalle{display:block}.tabla-rk tr.detalle td{display:block;padding:4px 14px 16px}
+  .detalle-grid{grid-template-columns:1fr}
+
+  /* Desarrollos */
+  .lista{position:static;max-height:none;border-radius:12px}
+  .sel-movil{display:grid;grid-template-columns:44px 1fr 44px 44px;gap:6px;padding:8px}
+  .sel-movil select{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff;font-weight:600;min-height:44px}
+  .btn.icono{padding:0;min-height:44px;font-size:20px;line-height:1}
+  .lista-h,.lista ul{display:none}
+  .lista-pie{display:none;border-top:1px solid var(--line)}
+  .lista.acciones .lista-pie{display:grid}
+  .ed-fijo{top:0;border-radius:0 0 12px 12px;margin:0 -14px;padding:10px 14px;border-left:0;border-right:0;border-top:0}
+  .ed-h{flex-wrap:nowrap;align-items:center;gap:10px}
+  .ed-h > div:first-child{min-width:0}
+  .ed-h h2{font-size:17px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .ed-h .donde{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .marcadores{gap:6px;flex-shrink:0}
+  .marcador{min-width:0;padding:6px 10px;border-radius:10px}
+  .marcador .l{font-size:11px}
+  .marcador .v{font-size:26px}
+  .marcador .x{display:none}
+  .delta{display:block;margin:0;font-size:11px;line-height:1.1}
+  .panel{padding:16px}
+  .vars{grid-template-columns:1fr;gap:0}
+  .var{padding:12px 0 10px;border-bottom:1px solid var(--line-2)}
+  .var-g{flex-direction:column;gap:0}
+  .var-f label{min-height:32px}
+  .form-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .fg.ancho{grid-column:1/-1}
+  .ed-pie .btn{flex:1;padding:12px}
+
+  /* Pesos */
+  .pesos-lay{grid-template-columns:1fr}
+  .bloque-p{padding:16px}
+  .bloque-p .cab{flex-direction:column;gap:6px}
+  .prow{grid-template-columns:1fr 64px;gap:6px 12px}.prow .ctl{grid-column:1/-1;grid-row:2}
+  .efecto{position:fixed;left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom));z-index:30;padding:0;border-radius:12px;box-shadow:0 8px 24px rgba(32,40,69,.35);max-height:58px;overflow:hidden}
+  .efecto.abierto{max-height:62vh;overflow-y:auto}
+  .efecto-t{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;cursor:pointer;min-height:58px;box-sizing:border-box}
+  .efecto-t .h3{font-size:16px;margin:0}
+  .efecto-res{display:block;font-size:12px;color:#C9CEDD}
+  .chev{display:block;font-size:18px;transition:transform .2s}
+  .efecto.abierto .chev{transform:rotate(180deg)}
+  .efecto p,.efecto ol{padding:0 14px}
+  .efecto ol{padding-bottom:10px}
+  [data-vista=pesos] .pesos-lay > div{padding-bottom:70px}
+
+  /* Fuentes: tablas apiladas */
+  .tabla-apilada thead{display:none}
+  .tabla-apilada,.tabla-apilada tbody,.tabla-apilada tr,.tabla-apilada td{display:block}
+  .tabla-apilada tr{padding:12px 14px;border-bottom:1px solid var(--line-2)}
+  .tabla-apilada td{padding:2px 0;border:0}
+  .tabla-apilada td[data-l]::before{content:attr(data-l);display:block;font-size:11.5px;color:var(--slate);margin-top:6px}
+  .toast{bottom:calc(80px + env(safe-area-inset-bottom));width:calc(100% - 28px);text-align:center}
+}
+@media screen and (max-width:380px){ .form-grid{grid-template-columns:1fr} .contexto{display:none} }
+@media (prefers-reduced-motion:no-preference){ .pila i,.mini .b i{transition:width .3s ease} }
+
+/* ---------- Propuesta impresa ---------- */
+.impresion{display:none}
+@page{size:letter;margin:14mm 14mm 16mm}
+@media print{
+  body{background:#fff;font-size:11.5px}
+  .top,.perfil,.vista-h,.no-imprimir,.flotante,.no-ofrecer,.alerta,.link,[data-vista]:not([data-vista=cliente]){display:none!important}
+  [data-vista=cliente]{display:block!important}
+  main{padding:0;max-width:none}
+  .cliente{display:block}
+  .impresion{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--gold);padding-bottom:10px;margin-bottom:12px}
+  .impresion .m{font-family:var(--serif);font-size:22px;color:var(--navy)}
+  .impresion .m small{display:block;font-family:var(--sans);font-size:10.5px;color:var(--slate)}
+  .impresion .q{text-align:right;font-size:11px;color:var(--slate)}
+  .impresion .q b{color:var(--ink);font-size:13px}
+  .imp-titulo{display:block!important;font-family:var(--serif);font-size:22px;margin:0 0 8px}
+  .chip{font-size:10.5px;padding:2px 8px}
+  .podio{grid-template-columns:1fr 1fr;gap:10px}
+  .rec{padding:12px 14px;break-inside:avoid;border-radius:10px}
+  .rec h3{font-size:18px}.rec.principal h3{font-size:22px}
+  .score .n{font-size:32px}.rec.principal .score .n{font-size:40px}
+  .datos,.txt,.txt.sec{font-size:11px}
+  h2.sec{font-size:18px}
+  .rank-sec{break-before:page}
+  table{font-size:10.5px} th,td{padding:5px 8px}
+  .nom small{font-size:9.5px}
+  tr.detalle{display:none!important}
+  .pie{font-size:9.5px}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.imp-titulo{display:none}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <p class="marca">iMexico Real Estate<small>VISUALIZE · Motor de ajuste inversión–cliente</small></p>
+    <nav class="pasos" role="tablist" aria-label="Secciones">
+      <button role="tab" data-tab="cliente" aria-selected="true"><span class="k">1</span><span class="lg">Cliente</span><span class="ct">Cliente</span></button>
+      <span class="sep" aria-hidden="true">›</span>
+      <button role="tab" data-tab="desarrollos" aria-selected="false"><span class="k">2</span><span class="lg">Desarrollos y scores</span><span class="ct">Scores</span></button>
+      <span class="sep" aria-hidden="true">›</span>
+      <button role="tab" data-tab="pesos" aria-selected="false"><span class="k">3</span><span class="lg">Pesos</span><span class="ct">Pesos</span></button>
+      <button role="tab" data-tab="fuentes" aria-selected="false" class="tab-fuentes"><span class="k k-i" aria-hidden="true">i</span><span class="lg">Fuentes y guía</span><span class="ct">Guía</span></button>
+    </nav>
+    <div class="contexto" id="contexto"></div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== 1. CLIENTE ===================== -->
+<section data-vista="cliente">
+  <div class="vista-h">
+    <div><h1 id="titulo">¿Qué desarrollos se ajustan a este cliente?</h1>
+      <p>Captura el perfil. El ranking se recalcula al instante con los scores y pesos actuales.</p></div>
+    <div class="acciones"><button class="btn" id="exportar" type="button">Exportar propuesta en PDF</button></div>
+  </div>
+
+  <div class="cliente">
+    <aside class="perfil" aria-label="Perfil del cliente">
+      <h2>Propuesta</h2>
+      <div class="dos-col">
+        <div class="campo"><label for="cliente">Cliente</label><input id="cliente" type="text" placeholder="Nombre"></div>
+        <div class="campo"><label for="asesor">Asesor</label><input id="asesor" type="text" placeholder="Nombre"></div>
+      </div>
+
+      <h2>Dinero</h2>
+      <div class="dos-col">
+        <div class="campo"><label for="presupuesto">Presupuesto máx.</label><div class="dinero"><span>$</span><input id="presupuesto" type="text" inputmode="numeric"></div></div>
+        <div class="campo"><label for="enganche">Enganche</label><div class="dinero"><span>$</span><input id="enganche" type="text" inputmode="numeric"></div></div>
+      </div>
+
+      <h2>Qué busca</h2>
+      <div class="campo"><span class="lbl" id="l-obj">Objetivo principal</span>
+        <div class="seg" role="group" aria-labelledby="l-obj" data-campo="objetivo">
+          <button type="button" data-v="Plusvalía">Plusvalía</button><button type="button" data-v="Renta">Renta</button><button type="button" data-v="Liquidez">Liquidez</button><button type="button" data-v="Patrimonio">Patrimonio</button>
+        </div></div>
+      <div class="campo"><label for="horizonte">Horizonte</label>
+        <div class="rango"><input id="horizonte" type="range" min="1" max="15" step="1"><output id="o-horizonte"></output></div></div>
+      <div class="campo"><span class="lbl" id="l-riesgo">Riesgo que acepta</span>
+        <div class="seg" role="group" aria-labelledby="l-riesgo" data-campo="riesgo">
+          <button type="button" data-v="Bajo">Bajo</button><button type="button" data-v="Moderado">Moderado</button><button type="button" data-v="Alto">Alto</button>
+        </div></div>
+      <div class="campo"><span class="lbl" id="l-liq">Necesidad de vender pronto</span>
+        <div class="seg" role="group" aria-labelledby="l-liq" data-campo="liquidez">
+          <button type="button" data-v="Baja">Sin prisa</button><button type="button" data-v="Media">Tal vez</button><button type="button" data-v="Alta">Prioridad</button>
+        </div></div>
+      <div class="campo"><span class="lbl" id="l-renta">¿Necesita rentarla?</span>
+        <div class="seg" role="group" aria-labelledby="l-renta" data-campo="requiereRenta">
+          <button type="button" data-v="true">Sí</button><button type="button" data-v="false">No</button>
+        </div></div>
+
+      <h2>Uso y destino</h2>
+      <div class="campo"><label for="uso">Uso personal al año</label>
+        <div class="rango"><input id="uso" type="range" min="0" max="180" step="5"><output id="o-uso"></output></div></div>
+      <div class="campo"><label for="destino">Destino preferido</label>
+        <select id="destino"><option>Indiferente</option><option>Playa del Carmen</option><option>Tulum</option><option>Puerto Morelos</option><option>Mahahual</option></select></div>
+    </aside>
+
+    <div>
+      <div class="impresion"><div class="m">iMexico Real Estate<small>Propuesta de inversión personalizada</small></div><div class="q" id="imp-meta"></div></div>
+      <p class="imp-titulo" id="imp-titulo"></p>
+      <div class="chips" id="chips"></div>
+      <div class="podio" id="podio"></div>
+      <button class="flotante" id="flot-cliente" type="button" hidden></button>
+      <h2 class="sec rank-sec">Ranking completo</h2>
+      <p class="sub no-imprimir">Toca una fila para ver por qué quedó ahí. El punto dorado indica scores editados.</p>
+      <div class="tabla-wrap">
+        <table class="tabla-rk">
+          <thead><tr><th>#</th><th>Desarrollo</th><th>MATCH</th><th>Lectura</th><th class="num">Precio desde</th><th class="num">Calidad del activo</th></tr></thead>
+          <tbody id="ranking"></tbody>
+        </table>
+      </div>
+      <p class="pie">MATCH mide el ajuste al perfil capturado; Calidad del activo (Investment Score) mide el desarrollo por sí mismo. Son calificaciones comparativas con información pública e inventario de iMexico; no garantizan plusvalía, renta ni ocupación. Precios "desde" corresponden a la unidad de entrada y pueden cambiar. <span id="fecha-pie"></span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 2. DESARROLLOS ===================== -->
+<section data-vista="desarrollos" hidden>
+  <div class="vista-h">
+    <div><h1>Desarrollos y scores</h1>
+      <p>Mueve cualquier calificación y mira cómo cambian la calidad del activo y el MATCH con el cliente actual.</p></div>
+  </div>
+  <div class="desarrollos">
+    <aside class="lista" aria-label="Lista de desarrollos">
+      <div class="sel-movil">
+        <button class="btn linea icono" id="ant" type="button" aria-label="Desarrollo anterior">‹</button>
+        <select id="sel-movil" aria-label="Elegir desarrollo"></select>
+        <button class="btn linea icono" id="sig" type="button" aria-label="Desarrollo siguiente">›</button>
+        <button class="btn linea icono" id="mas" type="button" aria-label="Más acciones" aria-expanded="false">⋯</button>
+      </div>
+      <div class="lista-h">
+        <input id="buscar" type="search" placeholder="Buscar desarrollo o destino">
+        <div class="lista-orden"><span id="conteo"></span>
+          <label>Ordenar <select id="orden"><option value="match">por MATCH</option><option value="is">por calidad</option><option value="nombre">por nombre</option></select></label></div>
+      </div>
+      <ul id="lista"></ul>
+      <div class="lista-pie">
+        <button class="btn oro chico" id="agregar" type="button">Agregar desarrollo</button>
+        <button class="btn linea chico" id="guardar" type="button">Guardar copia</button>
+        <button class="btn linea chico" id="cargar" type="button">Cargar copia</button>
+        <button class="btn peligro chico" id="restaurar-todo" type="button">Restaurar todo</button>
+        <input type="file" id="archivo" accept="application/json" hidden>
+      </div>
+    </aside>
+    <div class="editor" id="editor"></div>
+  </div>
+</section>
+
+<!-- ===================== 3. PESOS ===================== -->
+<section data-vista="pesos" hidden>
+  <div class="vista-h">
+    <div><h1>Pesos</h1><p>Cuánto importa cada variable. Los cambios se reflejan en todo VISUALIZE. Si la suma no da 100, el cálculo la reparte en proporción.</p></div>
+    <div class="acciones"><button class="btn linea" id="restaurar-pesos" type="button">Restaurar pesos recomendados</button></div>
+  </div>
+  <div class="pesos-lay">
+    <div>
+      <div class="bloque-p"><div class="cab"><div><h2 class="sec">Calidad del activo</h2><p class="sub" style="margin:0">Investment Score. Igual para cualquier cliente.</p></div><span class="total" id="total-is"></span></div><div id="pesos-is"></div></div>
+      <div class="bloque-p"><div class="cab"><div><h2 class="sec">MATCH con el cliente</h2><p class="sub" style="margin:0">Si una pregunta no aplica al cliente, su peso se reparte entre las demás.</p></div><span class="total" id="total-match"></span></div><div id="pesos-match"></div></div>
+      <div class="bloque-p"><div class="cab"><div><h2 class="sec">Filtros</h2><p class="sub" style="margin:0">Se aplican al final y solo restan: nunca regalan puntos.</p></div></div><div id="pesos-filtros"></div></div>
+      <div class="bloque-p"><h2 class="sec">Cómo leer el MATCH</h2><p class="sub">Rangos fijos.</p>
+        <div class="reglas">
+          <div class="regla"><b class="nivel Excepcional">90 a 100 · Excepcional</b>Ajuste excepcional al perfil.</div>
+          <div class="regla"><b class="nivel Fuerte">80 a 89 · Fuerte</b>Validar trade-offs y disponibilidad.</div>
+          <div class="regla"><b class="nivel Posible">70 a 79 · Posible</b>Hay opciones más alineadas.</div>
+          <div class="regla"><b class="nivel Debil">Menos de 70 · Débil</b>No ofrecer primero sin una razón específica.</div>
+        </div></div>
+    </div>
+    <aside class="efecto" id="efecto-box" aria-live="polite"><button class="efecto-t" id="efecto-t" type="button" aria-expanded="false"><span><span class="h3">Efecto en el cliente actual</span><span class="efecto-res" id="efecto-res"></span></span><span class="chev" aria-hidden="true">⌃</span></button><p id="efecto-p"></p><ol id="efecto"></ol></aside>
+  </div>
+</section>
+
+<!-- ===================== 4. FUENTES ===================== -->
+<section data-vista="fuentes" hidden>
+  <div class="vista-h"><div><h1>Fuentes y guía de scoring</h1><p>De dónde salen las calificaciones y qué significa un 1 y un 10 en cada variable.</p></div></div>
+  <div class="fuentes-lay">
+    <div><h2 class="sec">Guía de scoring</h2><p class="sub">Cada calificación debe sustentarse con evidencia. Sin evidencia, se marca "Sin evidencia" y no cuenta.</p>
+      <div class="tabla-wrap"><table class="tabla-apilada"><thead><tr><th>Variable</th><th>Qué mide</th><th>1 significa</th><th>10 significa</th></tr></thead><tbody id="guia"></tbody></table></div></div>
+    <div><h2 class="sec">Fuentes de mercado</h2><p class="sub">Revisar precios, avance de obra y mercado al menos una vez al mes.</p>
+      <div class="tabla-wrap"><table class="tabla-apilada"><thead><tr><th>Fuente</th><th>Periodo</th><th>Dato utilizado</th></tr></thead><tbody id="fuentes"></tbody></table></div></div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* ==========================================================
+   VISUALIZE v10 · Modelo iMexico
+   Datos: inventario iMexico (Sep 2026)
+   Calificaciones 1 a 10 · null = sin evidencia (no se inventa)
+   ========================================================== */
+
+const INVENTARIO_BASE = [
+  { id:"altra", nombre:"ALTRA Beach Condos", destino:"Playa del Carmen", microzona:"Centro", etapa:"Entrega inmediata", precio:4824000, m2:42.48, m2max:48.97, entrega:"2026-06-23", desarrollador:"BlueBay Group", confianza:"Alta",
+    s:{ubic:9.5, precio:4.5, plus:8, renta:9, liq:8.5, dem:9, dev:7.5, dif:8.5, fin:6, riesgo:9.5, esc:8},
+    mejorPara:"Renta vacacional y comprador que quiere operar de inmediato", noCuando:"Busca ticket bajo o preventa con plazo largo de pago", riesgoClave:"Prima de precio por ubicación premium; verificar reglas HOA para renta corta",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/49/altra-beach-condos" },
+  { id:"alux", nombre:"Alux 33", destino:"Puerto Morelos", microzona:"Región 01", etapa:"Venta", precio:4272400, m2:48.48, m2max:48.48, entrega:"2025-12-01", desarrollador:"Estratemex", confianza:"Media-Alta",
+    s:{ubic:8.5, precio:7, plus:8, renta:7.5, liq:6.5, dem:7, dev:7, dif:8.5, fin:6, riesgo:9, esc:8.5},
+    mejorPara:"Patrimonio, lifestyle y renta en mercado boutique", noCuando:"Necesita máxima liquidez o el volumen turístico de Playa", riesgoClave:"Mercado más pequeño; la salida puede tardar más",
+    fuenteMercado:"https://buyrivieramaya.mx/es/blog/mercado-inmobiliario-puerto-morelos/", fuenteProyecto:"https://realestateimexico.com/details/32" },
+  { id:"amara", nombre:"Amara", destino:"Tulum", microzona:"Región 8", etapa:"Venta", precio:3834000, m2:78, m2max:136, entrega:"2026-06-01", desarrollador:"No visible en la ficha", confianza:"Media",
+    s:{ubic:7.5, precio:8.5, plus:6.5, renta:6.5, liq:6, dem:6.5, dev:6, dif:8, fin:6, riesgo:9, esc:6.5},
+    mejorPara:"Lifestyle Tulum y unidad amplia", noCuando:"Busca máxima liquidez o depende de ocupaciones agresivas de Airbnb", riesgoClave:"Tulum mantiene inventario elevado y demanda más selectiva",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/tulum-real-estate-market/", fuenteProyecto:"https://realestateimexico.com/details/11/amara" },
+  { id:"baga", nombre:"Bagá Rivera 2", destino:"Playa del Carmen", microzona:"5ta Avenida", etapa:"Venta", precio:2850767, m2:41, m2max:78, entrega:"2026-11-01", desarrollador:"DOMA", confianza:"Alta",
+    s:{ubic:9, precio:6.5, plus:8, renta:8.5, liq:8, dem:8.5, dev:7.5, dif:8, fin:6.5, riesgo:8, esc:7},
+    mejorPara:"Entrada competitiva en Playa y renta turística", noCuando:"No tolera riesgo de preventa o requiere entrega inmediata", riesgoClave:"Entrega pendiente; restricciones HOA/renta corta deben verificarse",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/13/baga-rivera-2" },
+  { id:"hama", nombre:"Hama", destino:"Mahahual", microzona:"Av. Mahahual", etapa:"Venta", precio:3436400, m2:42, m2max:145, entrega:"2025-06-01", desarrollador:"Madanik", confianza:"Alta",
+    s:{ubic:8.5, precio:7.5, plus:7, renta:5.5, liq:5, dem:5.5, dev:6.5, dif:9, fin:6, riesgo:9, esc:9},
+    mejorPara:"Lifestyle frente al mar y apuesta de largo plazo en Caribe Sur", noCuando:"Necesita ocupación turística alta y salida rápida", riesgoClave:"Mahahual tiene menor ocupación de renta corta y menor profundidad de mercado",
+    fuenteMercado:"https://www.airdna.co/vacation-rental-data/app/mx/default/mahahual/overview", fuenteProyecto:"https://realestateimexico.com/details/17/hama" },
+  { id:"m5ta", nombre:"Macondo 5ta Fase III", destino:"Playa del Carmen", microzona:"5ta Avenida", etapa:"Venta", precio:3477600, m2:42.17, m2max:63.67, entrega:"2025-12-31", desarrollador:"Inmobiliaria Anahuac", confianza:"Alta",
+    s:{ubic:9, precio:5.5, plus:8, renta:8.5, liq:8, dem:8.5, dev:8.5, dif:8.5, fin:6, riesgo:9.5, esc:7},
+    mejorPara:"Renta, cercanía a playa y producto casi inmediatamente operable", noCuando:"Busca el menor precio por m²", riesgoClave:"Prima sobre promedio de ciudad; verificar régimen de rentas cortas",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/18" },
+  { id:"mcorazon", nombre:"Macondo Corazón", destino:"Playa del Carmen", microzona:"5ta Avenida", etapa:"Venta", precio:3891175, m2:37.42, m2max:125.49, entrega:"2026-08-01", desarrollador:"Inmobiliaria Anahuac", confianza:"Alta",
+    s:{ubic:9.5, precio:4.5, plus:8.5, renta:9, liq:8.5, dem:9, dev:8.5, dif:8.5, fin:6, riesgo:9, esc:7.5},
+    mejorPara:"Renta turística, ubicación caminable y reventa", noCuando:"Prioriza valor por m² sobre ubicación", riesgoClave:"Ticket por m² elevado; HOA y permisos de renta corta son críticos",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/6/macondo-corazon" },
+  { id:"mmayakoba", nombre:"Macondo Mayakoba", destino:"Playa del Carmen", microzona:"Ciudad Mayakoba", etapa:"Preventa", precio:3008000, m2:40.49, m2max:221.96, entrega:"2026-01-01", desarrollador:"Inmobiliaria Anahuac", confianza:"Alta",
+    s:{ubic:8, precio:6.5, plus:8, renta:6.5, liq:7, dem:7.5, dev:8.5, dif:8, fin:6.5, riesgo:8, esc:8},
+    mejorPara:"Patrimonio, residencia y horizonte largo", noCuando:"Busca renta vacacional intensiva en zona caminable a playa", riesgoClave:"Menor vocación turística inmediata que Centro",
+    fuenteMercado:"https://www.propiedades.com/valores/playa-del-carmen/departamentos-renta", fuenteProyecto:"https://realestateimexico.com/details/41" },
+  { id:"mplayacar", nombre:"Macondo Playacar", destino:"Playa del Carmen", microzona:"Playacar", etapa:"Venta", precio:5716480, m2:77.89, m2max:293.25, entrega:"2027-03-01", desarrollador:"Inmobiliaria Anahuac", confianza:"Alta",
+    s:{ubic:9.5, precio:7, plus:8, renta:7.5, liq:7.5, dem:8.5, dev:8.5, dif:9.5, fin:6, riesgo:8.5, esc:9.5},
+    mejorPara:"Patrimonio premium, uso personal y largo plazo", noCuando:"Busca maximizar rendimiento o un ticket de entrada bajo", riesgoClave:"Rendimiento esperado inferior a Centro; mayor capital inmovilizado",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/4/macondo-playacar" },
+  { id:"mpunta", nombre:"Macondo Punta Esmeralda", destino:"Playa del Carmen", microzona:"Punta Esmeralda", etapa:"Venta", precio:2851087, m2:22.21, m2max:48.89, entrega:"2026-08-01", desarrollador:"Inmobiliaria Anahuac", confianza:"Alta",
+    s:{ubic:8.5, precio:4, plus:8, renta:8, liq:7, dem:8, dev:8.5, dif:8.5, fin:6, riesgo:9.5, esc:8.5},
+    mejorPara:"Renta turística, cercanía al mar y producto diferenciado", noCuando:"Evalúa sólo por precio por m²", riesgoClave:"Unidad de entrada muy compacta eleva el $/m²; comparar por tipología",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/26/macondo-punta-esmeralda" },
+  { id:"mtulum", nombre:"Macondo Tulum", destino:"Tulum", microzona:"Aldea Zama", etapa:"Venta", precio:3259403, m2:45, m2max:123.48, entrega:"2025-06-01", desarrollador:"Macondo", confianza:"Alta",
+    s:{ubic:8, precio:7.5, plus:7, renta:7.5, liq:6.5, dem:7, dev:8, dif:8.5, fin:6, riesgo:9.5, esc:7},
+    mejorPara:"Renta y lifestyle en Aldea Zama", noCuando:"Busca mercado profundo o riesgo bajo", riesgoClave:"Tulum tiene más inventario, menor ocupación y mayor riesgo regulatorio que Playa",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/tulum-real-estate-market/", fuenteProyecto:"https://realestateimexico.com/details/19/macondo-tulum" },
+  { id:"pinkriad", nombre:"Pink Riad", destino:"Tulum", microzona:"Aldea Zama", etapa:"Venta", precio:6980000, m2:88, m2max:170, entrega:null, desarrollador:"No verificado", confianza:"Media",
+    s:{ubic:8, precio:6.5, plus:7, renta:7.5, liq:6, dem:7, dev:6.5, dif:9, fin:6, riesgo:null, esc:8},
+    mejorPara:"Lifestyle premium y diferenciación arquitectónica", noCuando:"Busca alta liquidez o fuerte eficiencia de precio", riesgoClave:"Ticket alto y mercado Tulum más selectivo",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/tulum-real-estate-market/", fuenteProyecto:"https://realestateimexico.com/projects" },
+  { id:"t3rra", nombre:"T3RRA", destino:"Playa del Carmen", microzona:"Centro", etapa:"Preventa", precio:2521008, m2:34.15, m2max:102.3, entrega:"2026-12-31", desarrollador:"Quinta Avenida", confianza:"Alta",
+    s:{ubic:8, precio:6, plus:8, renta:8, liq:8, dem:8.5, dev:7, dif:8, fin:7, riesgo:8, esc:7},
+    mejorPara:"Entrada, llave en mano y modelo condohotelero", noCuando:"Necesita entrega inmediata hoy", riesgoClave:"Riesgo de ejecución de preventa; validar operador del condohotel",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/43/t3rra" },
+  { id:"landmark", nombre:"The Landmark", destino:"Playa del Carmen", microzona:"Centro / Quinta Avenida", etapa:"Preventa", precio:2813583, m2:26.52, m2max:89.59, entrega:"2028-12-01", desarrollador:"Dimab", confianza:"Alta",
+    s:{ubic:9.5, precio:4.5, plus:8.5, renta:9, liq:8, dem:9, dev:7, dif:9.5, fin:7, riesgo:6, esc:8},
+    mejorPara:"Plusvalía de preventa, ubicación premium y horizonte largo", noCuando:"Tiene horizonte corto o aversión a riesgo de ejecución", riesgoClave:"Entrega 2028: capital expuesto a ejecución y cambios de mercado",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/", fuenteProyecto:"https://realestateimexico.com/details/51" },
+  { id:"xibalba", nombre:"Xibalba", destino:"Tulum", microzona:"La Veleta", etapa:"Venta", precio:4845000, m2:38, m2max:78, entrega:"2025-02-01", desarrollador:"DK del Karibe", confianza:"Alta",
+    s:{ubic:6.5, precio:4, plus:5.5, renta:5, liq:4.5, dem:5.5, dev:7, dif:7.5, fin:6, riesgo:9, esc:6.5},
+    mejorPara:"Lifestyle Tulum con producto entregado", noCuando:"Busca rentabilidad estable, alta ocupación o salida rápida", riesgoClave:"La Veleta tiene menor ocupación y mayor riesgo relativo",
+    fuenteMercado:"https://rivieramayarealestateinsider.com/tulum-real-estate-market/", fuenteProyecto:"https://realestateimexico.com/details/28/xibalba" }
+];
+
+/* Guía de scoring (hoja "Guía Scoring" del Excel) */
+const VARIABLES = [
+  { key:"ubic",   grupo:"Mercado",  nombre:"Ubicación y microzona", mide:"Calidad de microzona, acceso y cercanía a la demanda", uno:"Periférica, poca conectividad", diez:"Prime, caminable, escasa" },
+  { key:"precio", grupo:"Mercado",  nombre:"Precio frente al mercado", mide:"Valor del ticket y $/m² frente a referencias de la zona", uno:"Prima difícil de justificar", diez:"Descuento o valor sólido" },
+  { key:"plus",   grupo:"Mercado",  nombre:"Potencial de plusvalía", mide:"Probabilidad relativa de apreciación a largo plazo", uno:"Mercado maduro o debilitado", diez:"Drivers sólidos y escasez" },
+  { key:"renta",  grupo:"Mercado",  nombre:"Potencial de renta", mide:"Capacidad relativa para rentar; no es garantía de rendimiento", uno:"Demanda u ocupación débil", diez:"Alta demanda y producto adecuado" },
+  { key:"liq",    grupo:"Mercado",  nombre:"Liquidez / reventa", mide:"Facilidad relativa de reventa", uno:"Mercado estrecho", diez:"Demanda amplia, salida probable" },
+  { key:"dem",    grupo:"Mercado",  nombre:"Demanda real", mide:"Profundidad de compradores y huéspedes", uno:"Nicho pequeño", diez:"Demanda diversificada" },
+  { key:"dev",    grupo:"Proyecto", nombre:"Calidad del desarrollador", mide:"Evidencia observable de trayectoria y proyectos", uno:"Poca evidencia pública", diez:"Trayectoria visible y repetida" },
+  { key:"riesgo", grupo:"Proyecto", nombre:"Riesgo de ejecución", mide:"10 significa MENOR riesgo", uno:"Entrega lejana o incierta", diez:"Entregado o muy avanzado" },
+  { key:"dif",    grupo:"Proyecto", nombre:"Diferenciación", mide:"Qué tan sustituible es la unidad", uno:"Commodity", diez:"Producto escaso o diferenciado" },
+  { key:"esc",    grupo:"Proyecto", nombre:"Escasez futura", mide:"Dificultad de replicar ubicación o producto", uno:"Mucho inventario comparable", diez:"Escaso, con barreras de oferta" },
+  { key:"fin",    grupo:"Proyecto", nombre:"Esquema financiero", mide:"Flexibilidad de entrada y plan de pagos", uno:"Poco flexible o no visible", diez:"Flexible y competitivo" }
+];
+
+/* Grupos que pesan en la calidad del activo. Variables que se movían casi idénticas se fusionan. */
+const GRUPOS_IS = [
+  { key:"ubic",   nombre:"Ubicación y microzona",     vars:["ubic"],        porque:"Lo único que no se puede corregir después de comprar." },
+  { key:"precio", nombre:"Precio frente al mercado",  vars:["precio"],      porque:"Define el margen con el que entra el comprador." },
+  { key:"liqdem", nombre:"Demanda y liquidez",        vars:["liq","dem"],   porque:"Qué tan fácil es revender y qué tan profunda es la demanda; se evalúan juntas porque se mueven en paralelo." },
+  { key:"riesgo", nombre:"Riesgo de ejecución",       vars:["riesgo"],      porque:"Protege el capital del cliente, sobre todo en preventa." },
+  { key:"dev",    nombre:"Calidad del desarrollador", vars:["dev"],         porque:"Mejor indicador disponible de entrega y calidad de obra." },
+  { key:"plus",   nombre:"Potencial de plusvalía",    vars:["plus"],        porque:"Se refuerza en el MATCH cuando el cliente la busca." },
+  { key:"renta",  nombre:"Potencial de renta",        vars:["renta"],       porque:"Se refuerza en el MATCH cuando el cliente necesita rentar." },
+  { key:"difesc", nombre:"Diferenciación y escasez",  vars:["dif","esc"],   porque:"Qué tan difícil es reemplazar la unidad o su ubicación." },
+  { key:"fin",    nombre:"Esquema financiero",        vars:["fin"],         porque:"Flexibilidad del enganche y del plan de pagos." }
+];
+
+const GRUPOS_MATCH = [
+  { key:"objetivo",  nombre:"Objetivo del cliente", porque:"La razón principal de compra: plusvalía, renta, liquidez o patrimonio." },
+  { key:"riesgo",    nombre:"Riesgo que acepta",    porque:"Evita ofrecer preventas lejanas a quien no tolera espera." },
+  { key:"horizonte", nombre:"Horizonte",            porque:"Corto premia liquidez y entrega; largo premia ubicación, escasez y desarrollador." },
+  { key:"liquidez",  nombre:"Necesidad de vender",  porque:"Peso completo si es prioridad, la mitad si tal vez, cero si no tiene prisa." },
+  { key:"renta",     nombre:"Necesita rentar",      porque:"Solo cuenta si el cliente la necesita." },
+  { key:"uso",       nombre:"Uso personal",         porque:"Solo cuenta si la va a usar." }
+];
+
+const PESOS_RECOMENDADOS = {
+  is:    { ubic:18, precio:15, liqdem:15, riesgo:12, dev:12, plus:10, renta:8, difesc:6, fin:4 },
+  match: { objetivo:30, riesgo:20, horizonte:15, liquidez:15, renta:10, uso:10 },
+  filtros: { presupuesto:20, destino:10 }   // % que resta cada 10% sobre presupuesto · % por otro destino
+};
+
+const FUENTES = [
+  { fuente:"iMexico Real Estate", periodo:"Sep 2026", dato:"Inventario vigente, precios, superficies, desarrollador, entrega y atributos de proyecto", url:"https://realestateimexico.com/projects" },
+  { fuente:"Riviera Maya Real Estate Insider · Playa", periodo:"Abr 2026", dato:"Centro: yield 7.0–8.5%, ocupación 62%; Playacar: 6.5–7.5%, 58%; apreciación y días en mercado por zona", url:"https://rivieramayarealestateinsider.com/market-playa-del-carmen/" },
+  { fuente:"Riviera Maya Real Estate Insider · Tulum", periodo:"Abr 2026", dato:"Tulum: ocupación 51.7%, yield 6.8%; Aldea Zama 7.2%; La Veleta menor ocupación y mayor riesgo", url:"https://rivieramayarealestateinsider.com/tulum-real-estate-market/" },
+  { fuente:"TuLugar · Playa del Carmen", periodo:"Sep 2026", dato:"956 propiedades monitoreadas; mediana de ciudad y barrios para contraste de precio", url:"https://tulugar.com/es/mercado/mexico/playa-del-carmen" },
+  { fuente:"TuLugar · Puerto Morelos", periodo:"Sep 2026", dato:"73 propiedades monitoreadas; mercado más pequeño y precio de referencia", url:"https://tulugar.com/es/mercado/mexico/puerto-morelos-quintana-roo" },
+  { fuente:"Propiedades.com · Mahahual", periodo:"Ago 2026", dato:"140 departamentos activos; mediana $73.6 mil MXN/m²; precio medio +8.7% feb-2025 a ago-2026", url:"https://propiedades.com/valores/mahahual/departamentos-venta" },
+  { fuente:"AirDNA · Mahahual", periodo:"Ago 2026", dato:"Ocupación de renta corta 37%; RevPAR USD 37; Market Score 56; ocupación −4.5% anual", url:"https://www.airdna.co/vacation-rental-data/app/mx/default/mahahual/overview" },
+  { fuente:"Buy Riviera Maya · Puerto Morelos", periodo:"Jul 2026", dato:"Mercado boutique, menor densidad y profundidad que Playa; referencia de Alux 33", url:"https://buyrivieramaya.mx/es/blog/mercado-inmobiliario-puerto-morelos/" }
+];
+
+/* ---------------- Cálculo ---------------- */
+const avg = (...xs) => { const v = xs.filter(x => x !== null && x !== undefined && !Number.isNaN(x)); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; };
+
+function grupos(d){
+  const s = d.s;
+  return { ...s, liqdem: avg(s.liq, s.dem), difesc: avg(s.dif, s.esc) };
+}
+
+function weighted(parts){
+  let num = 0, den = 0;
+  parts.forEach(p => { if (p.valor !== null && p.valor !== undefined && p.peso > 0){ num += p.valor * p.peso; den += p.peso; } });
+  return den ? (num / den) * 10 : null;
+}
+
+function investmentScore(d, P){
+  const g = grupos(d);
+  const partes = GRUPOS_IS.map(x => ({ key:x.key, nombre:x.nombre, peso:P.is[x.key] || 0, valor:g[x.key] }));
+  const calificadas = partes.filter(p => p.valor !== null && p.peso > 0).reduce((a,p)=>a+p.peso,0);
+  const totalPeso = partes.reduce((a,p)=>a+p.peso,0);
+  return { score: weighted(partes), partes, cobertura: totalPeso ? calificadas/totalPeso : 0 };
+}
+
+function matchScore(d, perfil, P){
+  const g = grupos(d);
+  const IS = investmentScore(d, P).score;
+  if (IS === null) return { d, IS:null, match:null, ajuste:null, componentes:[], fPresupuesto:1, fDestino:1, sobre:0, cobertura:0 };
+  const is10 = IS / 10;
+  const W = P.match;
+
+  const objetivo = { "Plusvalía":g.plus, "Renta":g.renta, "Liquidez":g.liqdem, "Patrimonio":avg(g.ubic, g.plus, g.riesgo, g.difesc) }[perfil.objetivo];
+  const riesgo = perfil.riesgo === "Bajo" ? g.riesgo : perfil.riesgo === "Moderado" ? avg(g.riesgo, is10) : is10;
+  const h = perfil.horizonte;
+  const horizonte = h <= 3 ? avg(g.liqdem, g.riesgo) : h <= 6 ? avg(g.liqdem, g.riesgo, g.ubic) : avg(g.ubic, g.difesc, g.dev);
+  const factorLiq = { "Alta":1, "Media":0.5, "Baja":0 }[perfil.liquidez];
+  const dias = perfil.usoDias;
+  const uso = dias >= 60 ? avg(g.ubic, g.difesc, g.riesgo) : dias > 0 ? avg(g.ubic, g.renta, g.difesc) : null;
+
+  const componentes = [
+    { key:"objetivo",  nombre:`Objetivo: ${perfil.objetivo.toLowerCase()}`, peso:W.objetivo,              valor:objetivo },
+    { key:"riesgo",    nombre:`Riesgo ${perfil.riesgo.toLowerCase()}`,     peso:W.riesgo,                valor:riesgo },
+    { key:"horizonte", nombre:`Horizonte ${h} ${h===1?"año":"años"}`,     peso:W.horizonte,             valor:horizonte },
+    { key:"liquidez",  nombre:"Liquidez / reventa",                        peso:W.liquidez * factorLiq,  valor:g.liqdem },
+    { key:"renta",     nombre:"Capacidad de renta",                        peso:perfil.requiereRenta ? W.renta : 0, valor:g.renta },
+    { key:"uso",       nombre:"Uso personal",                              peso:dias > 0 ? W.uso : 0,    valor:uso }
+  ];
+  const ajuste = weighted(componentes) ?? 0;
+
+  const sobre = d.precio > perfil.presupuesto ? (d.precio - perfil.presupuesto) / perfil.presupuesto : 0;
+  const fPresupuesto = Math.max(0, 1 - sobre * (P.filtros.presupuesto / 10));
+  const fDestino = (perfil.destino === "Indiferente" || perfil.destino === d.destino) ? 1 : 1 - P.filtros.destino / 100;
+  const match = ajuste * fPresupuesto * fDestino;
+
+  const pesoTotal = componentes.reduce((a,c)=> a + (c.valor !== null ? c.peso : 0), 0);
+  componentes.forEach(c => { c.aporte = (c.valor !== null && c.peso && pesoTotal) ? (c.valor * c.peso / pesoTotal) * 10 : 0; });
+
+  return { d, IS, ajuste, match, fPresupuesto, fDestino, sobre, cobertura: perfil.enganche / d.precio, componentes };
+}
+
+function ranking(inventario, perfil, P){
+  const calificados = inventario.map(d => matchScore(d, perfil, P)).filter(r => r.match !== null);
+  return calificados
+    .sort((a,b) => (b.match - a.match) || (b.IS - a.IS) || (a.d.precio - b.d.precio))
+    .map((r,i) => ({ ...r, rank:i+1 }));
+}
+
+function lectura(m){
+  if (m === null) return { nivel:"Sin calificar", clase:"Sin" };
+  if (m >= 90) return { nivel:"Excepcional", clase:"Excepcional" };
+  if (m >= 80) return { nivel:"Fuerte", clase:"Fuerte" };
+  if (m >= 70) return { nivel:"Posible", clase:"Posible" };
+  return { nivel:"Débil", clase:"Debil" };
+}
+
+/* Alertas por regla, no escritas a mano: se recalculan cuando cambian los datos */
+function alertas(d, hoy){
+  const a = [];
+  const hoyISO = (hoy || new Date()).toISOString().slice(0,10);
+  if (!d.entrega) a.push("Fecha de entrega no verificada");
+  if (d.etapa === "Preventa" && d.entrega && d.entrega < hoyISO) a.push("Marcado como preventa, pero la fecha de entrega ya pasó: verificar etapa y fecha");
+  if (/no (verificado|visible)/i.test(d.desarrollador || "")) a.push("Desarrollador sin verificar: su calificación tiene poca evidencia");
+  if (!d.precio) a.push("Falta el precio desde");
+  const nulas = VARIABLES.filter(v => d.s[v.key] === null);
+  if (nulas.length === VARIABLES.length) a.push("Sin calificaciones todavía: no aparece en el ranking");
+  else if (nulas.length) a.push(`Sin evidencia (no cuenta en el score): ${nulas.map(v => v.nombre).join(", ")}`);
+  if (d.confianza && d.confianza !== "Alta" && d.confianza !== "Media-Alta") a.push(`Confianza ${d.confianza.toLowerCase()} en los datos`);
+  return a;
+}
+
+
+</script>
+<script>
+(function(){
+"use strict";
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = t => String(t ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const clone = o => JSON.parse(JSON.stringify(o));
+const fmt = n => "$" + Math.round(n).toLocaleString("es-MX");
+const fmtM = n => "$" + (n/1e6).toLocaleString("es-MX",{minimumFractionDigits:2,maximumFractionDigits:2}) + " M";
+const f1 = v => v === null || v === undefined ? "–" : Number(v).toLocaleString("es-MX",{maximumFractionDigits:1});
+const COLORES = ["c0","c1","c2","c3","c4","c5"];
+const KEY = "visualize_imexico_v10";
+const ORIGINAL = Object.fromEntries(INVENTARIO_BASE.map(d => [d.id, d]));
+
+/* ---------------- Estado ---------------- */
+const PERFIL_BASE = { cliente:"", asesor:"", presupuesto:5000000, enganche:1500000, objetivo:"Plusvalía", horizonte:7, riesgo:"Moderado", usoDias:30, destino:"Playa del Carmen", requiereRenta:true, liquidez:"Alta" };
+let S = { inv: clone(INVENTARIO_BASE), pesos: clone(PESOS_RECOMENDADOS), perfil: clone(PERFIL_BASE), sel: null, tab:"cliente" };
+
+try {
+  const raw = localStorage.getItem(KEY);
+  if (raw){ const g = JSON.parse(raw); if (g && Array.isArray(g.inv) && g.pesos) S = { ...S, ...g }; }
+} catch(e){}
+let guardadoT;
+function persistir(){ clearTimeout(guardadoT); guardadoT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }, 250); }
+
+function toast(t){ const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(el._t); el._t = setTimeout(() => el.hidden = true, 2600); }
+const dev = id => S.inv.find(d => d.id === id);
+const editado = d => { const o = ORIGINAL[d.id]; if (!o) return true; return JSON.stringify(o) !== JSON.stringify(d); };
+const perfilCalc = () => ({ ...S.perfil, presupuesto: S.perfil.presupuesto || 1 });
+const rk = (pesos) => ranking(S.inv, perfilCalc(), pesos || S.pesos);
+
+/* ---------------- Navegación ---------------- */
+function irA(tab){
+  S.tab = tab;
+  $$("[role=tab]").forEach(t => t.setAttribute("aria-selected", t.dataset.tab === tab));
+  $$("[data-vista]").forEach(v => v.hidden = v.dataset.vista !== tab);
+  if (tab === "cliente") renderCliente();
+  if (tab === "desarrollos") renderDesarrollos();
+  if (tab === "pesos") renderPesos();
+  window.scrollTo({top:0});
+  if (typeof flot === "function") setTimeout(flot, 50);
+  persistir();
+}
+$$("[role=tab]").forEach(t => t.addEventListener("click", () => irA(t.dataset.tab)));
+
+function renderContexto(){
+  const p = S.perfil;
+  $("#contexto").innerHTML = `Cliente: <b>${esc(p.cliente || "sin nombre")}</b> · ${esc(p.objetivo)} · ${fmtM(p.presupuesto)}`;
+}
+
+/* ================= 1. CLIENTE ================= */
+const num = el => Number(String(el.value).replace(/[^\d]/g,"")) || 0;
+function initPerfil(){
+  const p = S.perfil;
+  $("#cliente").value = p.cliente; $("#asesor").value = p.asesor;
+  $("#presupuesto").value = p.presupuesto.toLocaleString("en-US");
+  $("#enganche").value = p.enganche.toLocaleString("en-US");
+  $("#horizonte").value = p.horizonte; $("#uso").value = p.usoDias; $("#destino").value = p.destino;
+  $$(".seg").forEach(g => { const c = g.dataset.campo; g.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(p[c]) === b.dataset.v)); });
+}
+$$(".seg").forEach(g => g.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+  const c = g.dataset.campo;
+  S.perfil[c] = c === "requiereRenta" ? b.dataset.v === "true" : b.dataset.v;
+  g.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  cambioPerfil();
+})));
+["presupuesto","enganche"].forEach(id => { const el = $("#"+id); el.addEventListener("input", () => {
+  const pos = el.value.length - el.selectionStart; const v = num(el);
+  el.value = v ? v.toLocaleString("en-US") : ""; el.setSelectionRange(el.value.length - pos, el.value.length - pos);
+  S.perfil[id] = v; cambioPerfil();
+}); });
+$("#horizonte").addEventListener("input", e => { S.perfil.horizonte = +e.target.value; cambioPerfil(); });
+$("#uso").addEventListener("input", e => { S.perfil.usoDias = +e.target.value; cambioPerfil(); });
+$("#destino").addEventListener("change", e => { S.perfil.destino = e.target.value; cambioPerfil(); });
+["cliente","asesor"].forEach(id => $("#"+id).addEventListener("input", e => { S.perfil[id] = e.target.value; cambioPerfil(); }));
+function cambioPerfil(){ renderCliente(); renderContexto(); persistir(); }
+
+function pila(r){
+  if (!r.ajuste) return "";
+  const partes = r.componentes.filter(c => c.aporte > 0);
+  const desc = r.ajuste - r.match;
+  let segs = partes.map((c,i) => `<i class="${COLORES[i]}" style="width:${c.aporte * r.match / r.ajuste}%" title="${esc(c.nombre)}: ${c.aporte.toFixed(1)} pts"></i>`).join("");
+  if (desc > 0.05) segs += `<i class="desc" style="width:${desc}%" title="Descuento por filtros: −${desc.toFixed(1)}"></i>`;
+  let ley = partes.map((c,i)=>({c,i})).sort((a,b)=>b.c.aporte-a.c.aporte).map(({c,i}) => `<span class="${COLORES[i]}">${esc(c.nombre)} ${c.aporte.toFixed(0)}</span>`).join("");
+  if (desc > 0.05){
+    const m = []; if (r.fPresupuesto < 1) m.push(`presupuesto +${Math.round(r.sobre*100)}%`); if (r.fDestino < 1) m.push("otro destino");
+    ley += `<span class="cdesc">Descuento por ${m.join(" y ")} −${desc.toFixed(0)}</span>`;
+  }
+  return `<div class="comp"><div class="t"><span>Por qué obtiene ${r.match.toFixed(0)}</span><span>de 100</span></div><div class="pila" role="img" aria-label="Composición del MATCH">${segs}</div><div class="leyenda">${ley}</div></div>`;
+}
+const minus = t => { t = esc(t); return t.charAt(0).toLowerCase() + t.slice(1); };
+
+function tarjeta(r, principal){
+  const d = r.d, L = lectura(r.match), al = alertas(d);
+  return `<article class="rec ${principal?"principal":""}">
+    <div class="fila"><div><div class="pos">${r.rank === 1 ? "Mejor opción para este perfil" : "Opción " + r.rank}</div>
+      <h3>${esc(d.nombre)}${editado(d)?'<span class="editado no-imprimir" title="Scores editados"></span>':""}</h3><div class="donde">${esc(d.destino)} · ${esc(d.microzona)} · ${esc(d.etapa)}</div></div>
+      <div class="score"><div class="n">${r.match.toFixed(0)}</div><div class="nivel ${L.clase}">${L.nivel}</div></div></div>
+    <div class="datos"><div><span>Desde</span> ${fmtM(d.precio)}</div><div><span>Desde</span> ${f1(d.m2)} m²</div><div><span>Enganche cubre</span> ${Math.round(r.cobertura*100)}%</div><div><span>Calidad del activo</span> ${r.IS.toFixed(0)}</div></div>
+    ${principal ? pila(r) : ""}
+    <p class="txt"><b>Ideal para:</b> ${esc(d.mejorPara)}.</p>
+    <p class="txt sec"><b>A considerar:</b> ${esc(d.riesgoClave)}.</p>
+    ${r.fPresupuesto < 1 ? `<p class="txt sec">Rebasa el presupuesto por ${fmt(d.precio - S.perfil.presupuesto)}.</p>` : ""}
+    <div class="no-ofrecer"><b>No ofrecer si el cliente:</b> ${minus(d.noCuando)}.</div>
+    ${al.map(a => `<div class="alerta">${esc(a)}</div>`).join("")}
+    <button class="link" data-ver="${d.id}" type="button">Ver y ajustar scores</button>
+  </article>`;
+}
+
+let abierto = null;
+function renderCliente(){
+  const p = S.perfil;
+  $("#o-horizonte").innerHTML = `${p.horizonte} <small>${p.horizonte===1?"año":"años"}</small>`;
+  $("#o-uso").innerHTML = `${p.usoDias} <small>días</small>`;
+  $("#titulo").textContent = p.cliente ? `¿Qué desarrollos se ajustan a ${p.cliente}?` : "¿Qué desarrollos se ajustan a este cliente?";
+  const hoy = new Date().toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
+  $("#imp-meta").innerHTML = `${p.cliente?`<b>${esc(p.cliente)}</b><br>`:""}${p.asesor?`Asesor: ${esc(p.asesor)}<br>`:""}${hoy}`;
+  $("#imp-titulo").textContent = p.cliente ? `Recomendación para ${p.cliente}` : "Recomendación de inversión";
+  $("#fecha-pie").textContent = `Generado el ${hoy}.`;
+  const liq = {Alta:"Vender pronto es prioridad",Media:"Podría necesitar vender",Baja:"Sin prisa por vender"}[p.liquidez];
+  $("#chips").innerHTML = [`Presupuesto <b>${fmtM(p.presupuesto)}</b>`,`Enganche <b>${fmtM(p.enganche)}</b>`,`Objetivo <b>${esc(p.objetivo)}</b>`,`Horizonte <b>${p.horizonte} años</b>`,`Riesgo <b>${p.riesgo.toLowerCase()}</b>`,`<b>${p.requiereRenta?"Necesita renta":"No necesita renta"}</b>`,`Uso <b>${p.usoDias} días/año</b>`,`Destino <b>${esc(p.destino)}</b>`,`<b>${liq}</b>`].map(c=>`<span class="chip">${c}</span>`).join("");
+
+  const R = rk();
+  if (R.length < 3){ $("#podio").innerHTML = `<div class="rec vacio">Se necesitan al menos 3 desarrollos calificados.</div>`; }
+  else $("#podio").innerHTML = tarjeta(R[0], true) + `<div class="lado">${tarjeta(R[1])}${tarjeta(R[2])}</div>`;
+
+  $("#ranking").innerHTML = R.map(r => {
+    const d = r.d, L = lectura(r.match), al = alertas(d);
+    return `<tr class="fila-rk" data-id="${d.id}" tabindex="0" aria-expanded="${abierto===d.id}">
+      <td class="rk">${r.rank}</td>
+      <td class="nom">${esc(d.nombre)}${editado(d)?'<span class="editado no-imprimir" title="Scores editados"></span>':""}${al.length?`<span class="flag no-imprimir" title="${esc(al.join(" · "))}">!</span>`:""}<small>${esc(d.destino)} · ${esc(d.etapa)}</small></td>
+      <td class="c-sc"><div class="mini"><div class="b"><i style="width:${r.match}%"></i></div><b>${r.match.toFixed(0)}</b></div></td>
+      <td class="c-tag"><span class="tag ${L.clase}">${L.nivel}</span></td>
+      <td class="num c-pr">${fmtM(d.precio)}</td><td class="num c-is">${r.IS.toFixed(0)}</td></tr>` +
+      (abierto === d.id ? `<tr class="detalle"><td colspan="6"><div class="detalle-grid"><div>${pila(r)}</div><div>
+        <p class="txt"><b>Ideal para:</b> ${esc(d.mejorPara)}.</p><p class="txt sec"><b>A considerar:</b> ${esc(d.riesgoClave)}.</p>
+        <div class="no-ofrecer"><b>No ofrecer si el cliente:</b> ${minus(d.noCuando)}.</div>${al.map(a=>`<div class="alerta">${esc(a)}</div>`).join("")}
+        <button class="link" data-ver="${d.id}" type="button">Ver y ajustar scores</button></div></div></td></tr>` : "");
+  }).join("");
+
+  $$("tr.fila-rk").forEach(tr => {
+    const t = () => { abierto = abierto === tr.dataset.id ? null : tr.dataset.id; renderCliente(); };
+    tr.addEventListener("click", t);
+    tr.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); t(); } });
+  });
+  const top1 = R[0];
+  $("#flot-cliente").innerHTML = top1 ? `<span>Mejor opción: ${esc(top1.d.nombre)}<br><small style="font-weight:500">Ver recomendación</small></span><b>${top1.match.toFixed(0)}</b>` : "";
+  $$("[data-vista=cliente] [data-ver]").forEach(b => b.addEventListener("click", e => { e.stopPropagation(); S.sel = b.dataset.ver; irA("desarrollos"); }));
+}
+
+$("#exportar").addEventListener("click", () => {
+  abierto = null; renderCliente();
+  const t = document.title; document.title = `Propuesta iMexico${S.perfil.cliente ? " - " + S.perfil.cliente : ""}`;
+  window.print(); setTimeout(() => document.title = t, 600);
+});
+
+/* ================= 2. DESARROLLOS ================= */
+function pesoTexto(key){
+  const g = GRUPOS_IS.find(x => x.vars.includes(key));
+  const total = Object.values(S.pesos.is).reduce((a,b)=>a+(+b||0),0) || 1;
+  const pct = Math.round((S.pesos.is[g.key]||0) / total * 100);
+  if (g.vars.length > 1){ const otra = VARIABLES.find(v => v.key === g.vars.find(k => k !== key)); return `Pesa ${pct}% junto con ${otra.nombre.split(" /")[0].toLowerCase()}`; }
+  return `Pesa ${pct}%`;
+}
+
+function renderLista(){
+  const q = ($("#buscar").value || "").toLowerCase().trim();
+  const R = rk(); const pos = Object.fromEntries(R.map(r => [r.d.id, r]));
+  let items = S.inv.map(d => ({ d, r: pos[d.id], IS: investmentScore(d, S.pesos).score }));
+  if (q) items = items.filter(x => (x.d.nombre + " " + x.d.destino + " " + x.d.microzona).toLowerCase().includes(q));
+  const o = $("#orden").value;
+  items.sort((a,b) => o === "nombre" ? a.d.nombre.localeCompare(b.d.nombre) : o === "is" ? (b.IS??-1)-(a.IS??-1) : ((b.r?.match??-1)-(a.r?.match??-1)));
+  $("#conteo").textContent = `${S.inv.length} desarrollos`;
+  if (typeof llenarSelector === "function") llenarSelector();
+  $("#lista").innerHTML = items.map(({d,r,IS}) => `<li><button type="button" data-id="${d.id}" aria-current="${S.sel===d.id}">
+      <span class="n1">${esc(d.nombre)}${editado(d)?'<span class="editado" title="Editado"></span>':""}${alertas(d).length?'<span class="flag">!</span>':""}<small>${esc(d.destino)}</small></span>
+      <span class="sc">MATCH<b>${r ? r.match.toFixed(0) : "–"}</b></span>
+      <span class="sc">Calidad<b>${IS !== null ? IS.toFixed(0) : "–"}</b></span></button></li>`).join("") || `<li class="vacio">Sin resultados</li>`;
+  $$("#lista button").forEach(b => b.addEventListener("click", () => { S.sel = b.dataset.id; renderDesarrollos(); persistir(); if (window.innerWidth < 900) $("#editor").scrollIntoView({behavior:"smooth"}); }));
+}
+$("#buscar").addEventListener("input", renderLista);
+$("#orden").addEventListener("change", renderLista);
+
+function renderDesarrollos(){
+  if (!S.sel || !dev(S.sel)) S.sel = (rk()[0] || {d:S.inv[0]}).d?.id || null;
+  renderLista();
+  const d = dev(S.sel), o = ORIGINAL[d?.id];
+  if (!d){ $("#editor").innerHTML = `<div class="panel vacio">No hay desarrollos. Agrega uno para empezar.</div>`; return; }
+  const selOpt = (arr, v) => arr.map(x => `<option ${x===v?"selected":""}>${x}</option>`).join("");
+
+  const varsHTML = ["Mercado","Proyecto"].map(gr => `<div class="grupo-t">${gr === "Mercado" ? "Mercado y rendimiento" : "Proyecto y ejecución"}</div>` +
+    VARIABLES.filter(v => v.grupo === gr).map(v => {
+      const val = d.s[v.key], nula = val === null, ov = o ? o.s[v.key] : undefined, cambiado = o && ov !== val;
+      return `<div class="var ${nula?"nula":""}" data-var="${v.key}">
+        <div class="var-h"><span class="nm" title="${esc(v.mide)}">${esc(v.nombre)}</span><span class="pe" data-pe="${v.key}">${pesoTexto(v.key)}</span></div>
+        <div class="var-c"><input type="range" min="1" max="10" step="0.5" value="${nula?5:val}" ${nula?"disabled":""} aria-label="${esc(v.nombre)}"><output>${nula?"Sin dato":f1(val)}</output></div>
+        <div class="var-g"><span>1 · ${esc(v.uno)}</span><span>10 · ${esc(v.diez)}</span></div>
+        <div class="var-f"><label><input type="checkbox" ${nula?"checked":""} data-nula> Sin evidencia</label>
+          <span data-orig>${cambiado ? `<span class="orig">Original ${f1(ov)}</span> · <button class="rest" type="button" data-rest>Restaurar</button>` : ""}</span></div>
+      </div>`; }).join("")).join("");
+
+  $("#editor").innerHTML = `
+    <div class="panel ed-fijo">
+      <div class="ed-h">
+        <div><h2>${esc(d.nombre)}</h2><div class="donde">${[d.destino,d.microzona,d.etapa,d.desarrollador].filter(Boolean).map(esc).join(" · ")}</div></div>
+        <div class="marcadores">
+          <div class="marcador"><div class="l">Calidad<span class="lg"> del activo</span></div><div class="v" id="m-is"></div><div class="x" id="m-is-x"></div></div>
+          <div class="marcador oscuro"><div class="l" id="m-match-l"></div><div class="v" id="m-match"></div><div class="x" id="m-match-x"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ed-alertas" id="ed-alertas"></div>
+
+    <div class="panel">
+      <h3>Calificaciones</h3><p class="sub">Escala de 1 a 10. Pasa el cursor por el nombre para ver qué mide. Si no hay evidencia, marca "Sin evidencia": la variable no cuenta y su peso se reparte.</p>
+      <div class="vars" id="vars">${varsHTML}</div>
+    </div>
+
+    <div class="panel">
+      <h3>Datos del desarrollo</h3><p class="sub">El precio afecta el filtro de presupuesto; etapa y entrega generan alertas automáticas.</p>
+      <div class="form-grid" id="datos">
+        <div class="fg ancho"><label>Nombre</label><input data-f="nombre" value="${esc(d.nombre)}"></div>
+        <div class="fg"><label>Destino</label><select data-f="destino">${selOpt(["Playa del Carmen","Tulum","Puerto Morelos","Mahahual"], d.destino)}</select></div>
+        <div class="fg"><label>Microzona</label><input data-f="microzona" value="${esc(d.microzona)}"></div>
+        <div class="fg"><label>Precio desde (MXN)</label><input data-f="precio" data-tipo="num" inputmode="numeric" value="${Math.round(d.precio).toLocaleString("en-US")}"></div>
+        <div class="fg"><label>m² desde</label><input data-f="m2" data-tipo="dec" inputmode="decimal" value="${d.m2}"></div>
+        <div class="fg"><label>$/m² entrada</label><input value="${fmt(d.precio/(d.m2||1))}" disabled id="pm2"></div>
+        <div class="fg"><label>Etapa</label><select data-f="etapa">${selOpt(["Preventa","Venta","Entrega inmediata"], d.etapa)}</select></div>
+        <div class="fg"><label>Fecha de entrega</label><input type="date" data-f="entrega" value="${d.entrega||""}"></div>
+        <div class="fg ancho"><label>Desarrollador</label><input data-f="desarrollador" value="${esc(d.desarrollador)}"></div>
+        <div class="fg"><label>Confianza de los datos</label><select data-f="confianza">${selOpt(["Alta","Media-Alta","Media","Baja"], d.confianza)}</select></div>
+      </div>
+    </div>
+
+    <details class="panel">
+      <summary>Textos para el asesor y fuentes</summary>
+      <div class="form-grid">
+        <div class="fg todo"><label>Ideal para</label><textarea data-f="mejorPara">${esc(d.mejorPara)}</textarea></div>
+        <div class="fg todo"><label>No ofrecer si el cliente…</label><textarea data-f="noCuando">${esc(d.noCuando)}</textarea></div>
+        <div class="fg todo"><label>Riesgo clave</label><textarea data-f="riesgoClave">${esc(d.riesgoClave)}</textarea></div>
+        <div class="fg ancho"><label>Fuente de mercado</label><input data-f="fuenteMercado" value="${esc(d.fuenteMercado)}"></div>
+        <div class="fg ancho"><label>Ficha del proyecto</label><input data-f="fuenteProyecto" value="${esc(d.fuenteProyecto)}"></div>
+      </div>
+      <p class="sub" style="margin-top:12px">${d.fuenteMercado?`<a href="${esc(d.fuenteMercado)}" target="_blank" rel="noopener">Abrir fuente de mercado</a> · `:""}${d.fuenteProyecto?`<a href="${esc(d.fuenteProyecto)}" target="_blank" rel="noopener">Abrir ficha del proyecto</a>`:""}</p>
+    </details>
+
+    <div class="ed-pie">
+      ${o ? `<button class="btn linea" id="restaurar-dev" type="button" ${editado(d)?"":"disabled"}>Restaurar valores originales</button>` : `<button class="btn peligro" id="eliminar-dev" type="button">Eliminar desarrollo</button>`}
+      <button class="btn" type="button" id="ver-cliente">Ver ranking del cliente</button>
+    </div>`;
+
+  // Base para mostrar cuánto cambió
+  const base = o ? { IS: investmentScore(o, S.pesos).score, M: (ranking([o], perfilCalc(), S.pesos)[0]||{}).match } : null;
+  actualizarMarcadores(d, base);
+
+  // Sliders
+  $$("#vars .var").forEach(box => {
+    const key = box.dataset.var, rango = box.querySelector("input[type=range]"), out = box.querySelector("output"), chk = box.querySelector("[data-nula]");
+    const refrescarOrig = () => {
+      const ov = o ? o.s[key] : undefined;
+      box.querySelector("[data-orig]").innerHTML = (o && ov !== d.s[key]) ? `<span class="orig">Original ${f1(ov)}</span> · <button class="rest" type="button" data-rest>Restaurar</button>` : "";
+      const r = box.querySelector("[data-rest]"); if (r) r.addEventListener("click", () => { d.s[key] = ov; sync(); });
+    };
+    const sync = () => {
+      const v = d.s[key]; box.classList.toggle("nula", v === null);
+      rango.disabled = v === null; chk.checked = v === null;
+      if (v !== null) rango.value = v; out.textContent = v === null ? "Sin dato" : f1(v);
+      refrescarOrig(); cambioDatos(d, base);
+    };
+    rango.addEventListener("input", () => { d.s[key] = +rango.value; sync(); });
+    chk.addEventListener("change", () => { d.s[key] = chk.checked ? null : (o && o.s[key] !== null ? o.s[key] : 5); sync(); });
+    refrescarOrig();
+  });
+
+  // Campos
+  $$("#editor [data-f]").forEach(inp => {
+    const ev = inp.tagName === "SELECT" || inp.type === "date" ? "change" : "input";
+    inp.addEventListener(ev, () => {
+      const f = inp.dataset.f; let v = inp.value;
+      if (inp.dataset.tipo === "num"){ const pos = v.length - inp.selectionStart; const n = Number(v.replace(/[^\d]/g,"")) || 0; inp.value = n ? n.toLocaleString("en-US") : ""; inp.setSelectionRange(inp.value.length-pos, inp.value.length-pos); v = n; }
+      else if (inp.dataset.tipo === "dec"){ v = parseFloat(v.replace(",", ".")) || 0; }
+      else if (f === "entrega"){ v = v || null; }
+      d[f] = v;
+      $("#pm2").value = fmt(d.precio / (d.m2 || 1));
+      if (f === "nombre" || f === "destino"){ $("#editor h2").textContent = d.nombre; }
+      cambioDatos(d, base);
+    });
+  });
+
+  const rd = $("#restaurar-dev"); if (rd) rd.addEventListener("click", () => { Object.assign(d, clone(ORIGINAL[d.id])); renderDesarrollos(); persistir(); toast(`${d.nombre} volvió a sus valores originales`); });
+  const el = $("#eliminar-dev"); if (el) el.addEventListener("click", () => { if (!confirm(`¿Eliminar ${d.nombre}?`)) return; S.inv = S.inv.filter(x => x.id !== d.id); S.sel = null; renderDesarrollos(); persistir(); toast("Desarrollo eliminado"); });
+  $("#ver-cliente").addEventListener("click", () => irA("cliente"));
+}
+
+function cambioDatos(d, base){
+  actualizarMarcadores(d, base); renderLista(); renderContexto(); persistir();
+  const rd = $("#restaurar-dev"); if (rd) rd.disabled = !editado(d);
+}
+
+function actualizarMarcadores(d, base){
+  const IS = investmentScore(d, S.pesos).score;
+  const R = rk(); const r = R.find(x => x.d.id === d.id);
+  const delta = (v, b) => (b === null || b === undefined || v === null || Math.abs(v-b) < 0.05) ? "" : `<span class="delta ${v>b?"up":"down"}">${v>b?"+":"−"}${Math.abs(v-b).toFixed(1)}</span>`;
+  $("#m-is").innerHTML = IS === null ? "–" : IS.toFixed(0) + (base ? delta(IS, base.IS) : "");
+  $("#m-is-x").textContent = IS === null ? "Sin calificaciones" : "Igual para cualquier cliente";
+  $("#m-match-l").textContent = `MATCH con ${S.perfil.cliente || "el cliente actual"}`;
+  if (r){ const L = lectura(r.match); $("#m-match").innerHTML = r.match.toFixed(0) + (base ? delta(r.match, base.M) : ""); $("#m-match-x").innerHTML = `<span class="nivel ${L.clase}" style="color:inherit">${L.nivel}</span> · lugar ${r.rank} de ${R.length}`; }
+  else { $("#m-match").textContent = "–"; $("#m-match-x").textContent = "Sin calificar"; }
+  $("#ed-alertas").innerHTML = alertas(d).map(a => `<div class="alerta">${esc(a)}</div>`).join("");
+  $$("[data-pe]").forEach(s => s.textContent = pesoTexto(s.dataset.pe));
+}
+
+$("#agregar").addEventListener("click", () => {
+  const nombre = prompt("Nombre del nuevo desarrollo:"); if (!nombre) return;
+  const id = "n" + Date.now().toString(36);
+  S.inv.push({ id, nombre:nombre.trim(), destino:"Playa del Carmen", microzona:"", etapa:"Preventa", precio:0, m2:0, m2max:0, entrega:null, desarrollador:"No verificado", confianza:"Media",
+    s: Object.fromEntries(VARIABLES.map(v => [v.key, null])), mejorPara:"", noCuando:"", riesgoClave:"", fuenteMercado:"", fuenteProyecto:"" });
+  S.sel = id; renderDesarrollos(); persistir(); toast("Desarrollo agregado. Captura precio y calificaciones.");
+});
+
+$("#guardar").addEventListener("click", () => {
+  const data = { app:"VISUALIZE iMexico", version:"v10", fecha:new Date().toISOString(), inventario:S.inv, pesos:S.pesos };
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], {type:"application/json"}));
+  a.download = `VISUALIZE_datos_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast("Copia descargada. Compártela para que otros carguen los mismos datos.");
+});
+$("#cargar").addEventListener("click", () => $("#archivo").click());
+$("#archivo").addEventListener("change", e => {
+  const file = e.target.files[0]; if (!file) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const g = JSON.parse(rd.result);
+      if (!Array.isArray(g.inventario) || !g.pesos || !g.pesos.is) throw new Error();
+      S.inv = g.inventario; S.pesos = { ...clone(PESOS_RECOMENDADOS), ...g.pesos }; S.sel = null;
+      renderDesarrollos(); persistir(); toast("Copia cargada");
+    } catch(err){ toast("El archivo no es una copia válida de VISUALIZE"); }
+    e.target.value = "";
+  };
+  rd.readAsText(file);
+});
+$("#restaurar-todo").addEventListener("click", () => {
+  if (!confirm("Esto regresa todos los desarrollos a los valores originales y elimina los agregados. ¿Continuar?")) return;
+  S.inv = clone(INVENTARIO_BASE); S.sel = null; renderDesarrollos(); persistir(); toast("Inventario restaurado");
+});
+
+/* ================= 3. PESOS ================= */
+function renderPesos(){
+  const fila = (grupo, key, meta, max, recomendado) => {
+    const v = S.pesos[grupo][key];
+    return `<div class="prow ${v!==recomendado?"cambio":""}" data-g="${grupo}" data-k="${key}">
+      <div class="nm">${esc(meta.nombre)}<small>Recomendado: ${recomendado}</small></div>
+      <div class="ctl"><input type="range" min="0" max="${max}" step="1" value="${v}" aria-label="${esc(meta.nombre)}"><div class="pq">${esc(meta.porque)}</div></div>
+      <div class="val"><input type="number" min="0" max="${max}" value="${v}" aria-label="Peso ${esc(meta.nombre)}"></div></div>`;
+  };
+  $("#pesos-is").innerHTML = GRUPOS_IS.map(g => fila("is", g.key, g, 40, PESOS_RECOMENDADOS.is[g.key])).join("");
+  $("#pesos-match").innerHTML = GRUPOS_MATCH.map(g => fila("match", g.key, g, 50, PESOS_RECOMENDADOS.match[g.key])).join("");
+  $("#pesos-filtros").innerHTML =
+    fila("filtros","presupuesto",{nombre:"Castigo por presupuesto", porque:"Porcentaje del MATCH que se resta por cada 10% que el precio rebasa el presupuesto."},50,PESOS_RECOMENDADOS.filtros.presupuesto) +
+    fila("filtros","destino",{nombre:"Castigo por otro destino", porque:"Porcentaje del MATCH que se resta si el desarrollo no está en el destino preferido."},50,PESOS_RECOMENDADOS.filtros.destino);
+
+  $$(".prow").forEach(row => {
+    const g = row.dataset.g, k = row.dataset.k, r = row.querySelector("input[type=range]"), n = row.querySelector("input[type=number]");
+    const set = v => { v = Math.max(0, Math.min(+r.max, Math.round(+v || 0))); S.pesos[g][k] = v; r.value = v; n.value = v;
+      row.classList.toggle("cambio", v !== PESOS_RECOMENDADOS[g][k]); totales(); efecto(); persistir(); };
+    r.addEventListener("input", () => set(r.value));
+    n.addEventListener("change", () => set(n.value));
+  });
+  totales(); efecto();
+}
+function totales(){
+  const t = o => Object.values(o).reduce((a,b)=>a+(+b||0),0);
+  const ti = t(S.pesos.is), tm = t(S.pesos.match);
+  $("#total-is").textContent = ti === 100 ? "Suma 100" : `Suma ${ti} · se reparte en proporción`; $("#total-is").classList.toggle("mal", ti !== 100);
+  $("#total-match").textContent = tm === 100 ? "Suma 100" : `Suma ${tm} · se reparte en proporción`; $("#total-match").classList.toggle("mal", tm !== 100);
+}
+function efecto(){
+  const actual = rk(), rec = rk(PESOS_RECOMENDADOS);
+  const posRec = Object.fromEntries(rec.map(r => [r.d.id, r.rank]));
+  const iguales = JSON.stringify(S.pesos) === JSON.stringify(PESOS_RECOMENDADOS);
+  $("#efecto-p").textContent = iguales ? `Ranking de ${S.perfil.cliente || "el cliente actual"} con los pesos recomendados.` : `Flechas: cambio de lugar frente a los pesos recomendados.`;
+  $("#efecto").innerHTML = actual.slice(0,10).map(r => {
+    const d = posRec[r.d.id] - r.rank;
+    const mv = d > 0 ? `<span class="mv up">▲${d}</span>` : d < 0 ? `<span class="mv down">▼${-d}</span>` : `<span class="mv eq">·</span>`;
+    return `<li><span class="r">${r.rank}</span><b>${esc(r.d.nombre)}</b><span>${r.match.toFixed(0)}</span>${mv}</li>`;
+  }).join("");
+  const cambios = actual.filter(r => posRec[r.d.id] !== r.rank).length;
+  $("#efecto-res").textContent = actual[0] ? `1. ${actual[0].d.nombre} · ${actual[0].match.toFixed(0)} · ${cambios ? cambios + " cambian de lugar" : "sin cambios de lugar"}` : "";
+}
+$("#restaurar-pesos").addEventListener("click", () => { S.pesos = clone(PESOS_RECOMENDADOS); renderPesos(); persistir(); toast("Pesos recomendados restaurados"); });
+
+/* ================= 4. FUENTES ================= */
+$("#guia").innerHTML = VARIABLES.map(v => `<tr><td class="nom">${esc(v.nombre)}</td><td data-l="Qué mide">${esc(v.mide)}</td><td data-l="1 significa">${esc(v.uno)}</td><td data-l="10 significa">${esc(v.diez)}</td></tr>`).join("");
+$("#fuentes").innerHTML = FUENTES.map(f => `<tr><td class="nom"><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.fuente)}</a></td><td data-l="Periodo">${esc(f.periodo)}</td><td data-l="Dato utilizado">${esc(f.dato)}</td></tr>`).join("");
+
+/* ---------------- Móvil ---------------- */
+const esMovil = () => window.matchMedia("(max-width:900px)").matches;
+let podioVisible = false;
+if ("IntersectionObserver" in window){
+  new IntersectionObserver(es => { podioVisible = es[0].isIntersecting; flot(); }, { threshold:0.05 }).observe($("#podio"));
+}
+const tablaRk = $(".tabla-rk");
+let tablaVisible = false;
+if ("IntersectionObserver" in window){ new IntersectionObserver(es => { tablaVisible = es[0].isIntersecting; flot(); }).observe(tablaRk); }
+function flot(){ $("#flot-cliente").hidden = !(esMovil() && S.tab === "cliente" && !podioVisible && !tablaVisible); }
+window.addEventListener("resize", flot);
+$("#flot-cliente").addEventListener("click", () => $("#podio").scrollIntoView({behavior:"smooth", block:"start"}));
+
+function llenarSelector(){
+  const R = rk(); const pos = Object.fromEntries(R.map(r => [r.d.id, r]));
+  const orden = [...S.inv].sort((a,b) => ((pos[b.id]?.match ?? -1) - (pos[a.id]?.match ?? -1)));
+  $("#sel-movil").innerHTML = orden.map(d => `<option value="${d.id}" ${d.id===S.sel?"selected":""}>${pos[d.id] ? pos[d.id].rank + ". " : ""}${esc(d.nombre)}${pos[d.id] ? " · " + pos[d.id].match.toFixed(0) : ""}</option>`).join("");
+  return orden;
+}
+function mover(paso){ const o = llenarSelector(); const i = o.findIndex(d => d.id === S.sel); const n = o[(i + paso + o.length) % o.length]; if (n){ S.sel = n.id; renderDesarrollos(); persistir(); } }
+$("#sel-movil").addEventListener("change", e => { S.sel = e.target.value; renderDesarrollos(); persistir(); });
+$("#ant").addEventListener("click", () => mover(-1));
+$("#sig").addEventListener("click", () => mover(1));
+$("#mas").addEventListener("click", () => { const l = $(".lista"); const a = l.classList.toggle("acciones"); $("#mas").setAttribute("aria-expanded", a); });
+
+$("#efecto-t").addEventListener("click", () => { if (!esMovil()) return; const b = $("#efecto-box"); const a = b.classList.toggle("abierto"); $("#efecto-t").setAttribute("aria-expanded", a); });
+
+/* ---------------- Inicio ---------------- */
+initPerfil(); renderContexto(); irA(S.tab || "cliente");
+})();
+</script>
+</body>
+</html>
